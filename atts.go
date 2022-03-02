@@ -44,10 +44,9 @@ var codecs = map[string]codec{
 	"other":   codec{"sln", "8000"},
 }
 
-const (
-	baiduSpeechAPIKey    = ""
-	baiduSpeechSecretKey = ""
-)
+//go build -ldflags "-X main.baiduSpeechAPIKey=xxx main.baiduSpeechSecretKey=xxx"
+var baiduSpeechAPIKey string
+var baiduSpeechSecretKey string
 
 func main() {
 
