@@ -61,6 +61,7 @@ func main() {
 		text = os.Args[1]
 		intkey = true
 	} else if (len(os.Args) == 3) && (os.Args[2] == "false") {
+
 		text = os.Args[1]
 		intkey = false
 	} else {
@@ -109,7 +110,7 @@ func playback(text string, format string, intkey bool, myAgi *agi.Session) strin
 	//if already cached is false we'll generate a new sound file for playback
 	if alreadyCached(name, format) == false {
 		os.Remove(workDir + "TtS_*") 
-		//mp3Name := getText2Speach( text, name )
+		//mp3Name := getText2Speach( "pico message: "+text, name )
 		//wavName := convert2Wav( mp3Name )
 		wavName := getText2Speach_pico(text, name)
 		astName = convert2Aster(wavName, format)
