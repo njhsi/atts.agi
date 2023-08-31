@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"io/ioutil"
+//	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/njhsi/atts.agi/internal/agi"
-	"github.com/njhsi/atts.agi/internal/oauth"
-	"github.com/njhsi/atts.agi/internal/speech"
+//	"github.com/njhsi/atts.agi/internal/oauth"
+//	"github.com/njhsi/atts.agi/internal/speech"
 )
 
 type codec struct {
@@ -101,16 +101,17 @@ func main() {
 func playback(text string, format string, intkey bool, myAgi *agi.Session) string {
 
 	//store a hashed verstion of our message to use as a filename
-	name := hashString(text)
+	name := "TtS_"+hashString(text)
 	//var to hold the name of the file we will be streaming
 	astName := name
 
 	//check if we already have this message cached in our temp directory and play that back
 	//if already cached is false we'll generate a new sound file for playback
 	if alreadyCached(name, format) == false {
+		os.Remove(workDir + "TtS_*") 
 		//mp3Name := getText2Speach( text, name )
 		//wavName := convert2Wav( mp3Name )
-		wavName := getText2Speach(text, name)
+		wavName := getText2Speach_pico(text, name)
 		astName = convert2Aster(wavName, format)
 	} else {
 		astName = name
@@ -162,8 +163,17 @@ func alreadyCached(filename string, audioformat string) bool {
 	return true
 }
 
+func getText2Speach_pico(text string, filename string) string {                                 
+        _, err := exec.Command("/usr/bin/pico2wave", "-w",  workDir+filename+".wav", text).Output()
+                                                                  
+        if err != nil {                    
+                log.Fatal(err)             
+        }     
+        return filename                                                
+}    
+
 //do our text 2 speach dealie... retrieved as an mp3
-func getText2Speach(text string, filename string) string {
+/*func getText2Speach_baidu(text string, filename string) string {
 
 	auth := oauth.NewBaiduOauth(baiduSpeechAPIKey, baiduSpeechSecretKey, oauth.NewCacheImp())
 	tts := speech.NewBaiduTTS(auth)
@@ -179,6 +189,7 @@ func getText2Speach(text string, filename string) string {
 	}
 	return filename
 }
+*/
 
 //use mpg123 to convert our recieved mp3 to a wav
 func convert2Wav(filename string) string {
