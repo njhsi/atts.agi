@@ -112,7 +112,7 @@ func playback(text string, format string, intkey bool, myAgi *agi.Session) strin
 		os.Remove(workDir + "TtS_*") 
 		//mp3Name := getText2Speach( "pico message: "+text, name )
 		//wavName := convert2Wav( mp3Name )
-		wavName := getText2Speach_pico(text, name)
+		wavName := getText2Speach_pico("pico message: "+text, name)
 		astName = convert2Aster(wavName, format)
 	} else {
 		astName = name
